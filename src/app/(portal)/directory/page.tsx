@@ -1,8 +1,9 @@
 import { Suspense } from 'react'
 import { db } from '@/lib/firebase/client'
 import { collection, query, where, getDocs, limit, getDoc, doc, orderBy } from 'firebase/firestore'
-import { Search, SlidersHorizontal, Star, Zap, Users, Globe } from 'lucide-react'
+import { Search, SlidersHorizontal, Star, Zap, Users, Globe, Plus } from 'lucide-react'
 import Link from 'next/link'
+import Button from '@/components/ui/Button'
 import { Badge, Card, Skeleton, StarRating, StatusDot, VouchedBadge } from '@/components/ui/index'
 
 export const metadata = {
@@ -106,14 +107,21 @@ export default async function DirectoryPage({ searchParams }: DirectoryPageProps
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* Page header */}
-      <div className="mb-8">
-        <h1 className="section-title flex items-center gap-3">
-          <Users className="w-7 h-7 text-secondary" aria-hidden="true" />
-          Tradesperson Directory
-        </h1>
-        <p className="section-subtitle">
-          Find trusted Telugu-speaking professionals in Halton Region & GTA
-        </p>
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="section-title flex items-center gap-3">
+            <Users className="w-7 h-7 text-secondary" aria-hidden="true" />
+            Tradesperson Directory
+          </h1>
+          <p className="section-subtitle">
+            Find trusted Telugu-speaking professionals in Halton Region & GTA
+          </p>
+        </div>
+        <Link href="/directory/new">
+          <Button variant="primary" leftIcon={<Plus className="w-4 h-4" />}>
+            List Service
+          </Button>
+        </Link>
       </div>
 
       {/* Filters */}

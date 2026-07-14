@@ -1,8 +1,9 @@
 import { Suspense } from 'react'
 import { db } from '@/lib/firebase/client'
 import { collection, query, where, getDocs, limit, getDoc, doc } from 'firebase/firestore'
-import { Search, SlidersHorizontal, ShieldCheck, Heart, Baby, Clock, Phone } from 'lucide-react'
+import { Search, SlidersHorizontal, ShieldCheck, Heart, Baby, Clock, Phone, Plus } from 'lucide-react'
 import Link from 'next/link'
+import Button from '@/components/ui/Button'
 import { Badge, Card, Skeleton, StarRating, StatusDot } from '@/components/ui/index'
 
 export const metadata = {
@@ -72,14 +73,21 @@ export default async function ChildcarePage({ searchParams }: ChildcarePageProps
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* Page header */}
-      <div className="mb-8">
-        <h1 className="section-title flex items-center gap-3">
-          <Baby className="w-7 h-7 text-secondary" aria-hidden="true" />
-          Childcare Network
-        </h1>
-        <p className="section-subtitle">
-          Find trusted, VSC-verified babysitters, nannies, and community aunties.
-        </p>
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="section-title flex items-center gap-3">
+            <Baby className="w-7 h-7 text-secondary" aria-hidden="true" />
+            Childcare Network
+          </h1>
+          <p className="section-subtitle">
+            Find trusted, VSC-verified babysitters, nannies, and community aunties.
+          </p>
+        </div>
+        <Link href="/childcare/new">
+          <Button variant="primary" leftIcon={<Plus className="w-4 h-4" />}>
+            List as Provider
+          </Button>
+        </Link>
       </div>
 
       {/* Safety Banner */}

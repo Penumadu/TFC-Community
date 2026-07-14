@@ -1,8 +1,9 @@
 import { Suspense } from 'react'
 import { db } from '@/lib/firebase/client'
 import { collection, query, where, getDocs, limit } from 'firebase/firestore'
-import { Search, SlidersHorizontal, MapPin, Users, Heart, ExternalLink } from 'lucide-react'
+import { Search, SlidersHorizontal, MapPin, Users, Heart, ExternalLink, Plus } from 'lucide-react'
 import Link from 'next/link'
+import Button from '@/components/ui/Button'
 import { Badge, Card, Skeleton, StarRating } from '@/components/ui/index'
 
 export const metadata = {
@@ -72,14 +73,21 @@ export default async function VenuesPage({ searchParams }: VenuesPageProps) {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
 
       {/* Page header */}
-      <div className="mb-8">
-        <h1 className="section-title flex items-center gap-3">
-          <MapPin className="w-7 h-7 text-secondary" aria-hidden="true" />
-          Community Venues
-        </h1>
-        <p className="section-subtitle">
-          Find halls, temples, and event spaces for gatherings & celebrations
-        </p>
+      <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h1 className="section-title flex items-center gap-3">
+            <MapPin className="w-7 h-7 text-secondary" aria-hidden="true" />
+            Community Venues
+          </h1>
+          <p className="section-subtitle">
+            Find halls, temples, and event spaces for gatherings & celebrations
+          </p>
+        </div>
+        <Link href="/venues/new">
+          <Button variant="primary" leftIcon={<Plus className="w-4 h-4" />}>
+            Suggest Venue
+          </Button>
+        </Link>
       </div>
 
       {/* Filters */}

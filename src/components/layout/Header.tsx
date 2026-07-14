@@ -2,8 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { useRouter, usePathname } from 'next/navigation'
 import { clsx } from 'clsx'
+import { auth } from '@/lib/firebase/client'
+import { signOut } from 'firebase/auth'
 import { useLanguage } from '@/lib/i18n/LanguageContext'
 import Button from '@/components/ui/Button'
 import {
@@ -18,6 +20,8 @@ import {
   Globe,
   AlertTriangle,
   ChevronDown,
+  ShieldAlert,
+  LogOut,
 } from 'lucide-react'
 
 const navItems = [
@@ -34,10 +38,26 @@ interface HeaderProps {
 }
 
 export default function Header({ isAuthenticated = false, userDisplayName, isAdmin = false }: HeaderProps) {
+  const router = useRouter()
   const pathname = usePathname()
   const { locale, dict, toggleLanguage, isLoading: langLoading } = useLanguage()
   const [mobileOpen, setMobileOpen] = useState(false)
   const [scrolled, setScrolled]     = useState(false)
+  const [isLoggingOut, setIsLoggingOut] = useState(false)
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true)
+    try {
+      await signOut(auth)
+      await fetch('/api/auth/session', { method: 'DELETE' })
+      router.push('/login')
+      router.refresh()
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setIsLoggingOut(false)
+    }
+  }
 
   // Scroll shadow effect
   useEffect(() => {
@@ -189,6 +209,17 @@ export default function Header({ isAuthenticated = false, userDisplayName, isAdm
                     </span>
                   </button>
                 </Link>
+                <button
+                  onClick={handleLogout}
+                  disabled={isLoggingOut}
+                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-danger/10
+                             text-danger text-sm font-semibold hover:bg-danger/20
+                             transition-colors duration-200 focus-visible:outline-none
+                             focus-visible:ring-2 focus-visible:ring-danger disabled:opacity-50"
+                  title="Log Out"
+                >
+                  <LogOut className="w-4 h-4" aria-hidden="true" />
+                </button>
               </div>
             ) : (
               <Link href="/login">
